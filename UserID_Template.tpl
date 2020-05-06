@@ -14,6 +14,7 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "User ID Cookie Tag",
+  "categories": ["REMARKETING", "ADVERTISING", "ANALYTICS"],
   "brand": {
     "id": "brand_dummy",
     "displayName": "",
