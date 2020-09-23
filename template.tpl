@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -14,13 +14,17 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "User ID Cookie Tag",
-  "categories": ["REMARKETING", "ADVERTISING", "ANALYTICS"],
+  "categories": [
+    "REMARKETING",
+    "ADVERTISING",
+    "ANALYTICS"
+  ],
   "brand": {
-    "id": "brand_dummy",
-    "displayName": "",
+    "id": "github.com_Nerolation",
+    "displayName": "Nerolation",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEbElEQVRoge3aS4wVRRQG4G8QmDFidGAEfEUwRkVEjCZGE9SNRiQxAV0h4s6wk4dsXJm4ZIsv1LhwZdwaFTcCShhFJEBQAQGJAsZXfEQEZmDGRVWnm2vPvdV9e5AFf1Lpm1unzjn/rVPVp05dLuLCQk+Duq7EA1iAObgJA5gS+//GLziIffgUn+DPBn2ojV4sw0acwWjFdgYf4smo67yjD2twrODUKWzGC1iCuZgWZfvi59vxeJTZgtOF8UexKsqeFzwqhEfmwJdYgf4auvrj2J0Ffd/ikUY8HQN9eKVgcCcWNqS7R/iBdhX0rzcO4TYDO6KBf7ASlzRtBBOxGiejre2Y3pTyWcJ0jwq7zbwO8nPwPDbhkED8BA7jbdyXYHM+DkSbB6IPXWGGnMRnwoIdCwN4C2e136lG8GKUb4cBfC4nU3tm+uThNCh/H5RhOvZ2INDahrEBl7XRO6VAZruaa+ZVeTi1m4kJ2FqRRLFtxeQ2+gfkYfZSVRKL5Au705p4ogsSWVvbwcad8g0geWu+VFiko3g2Qf69BogcSbCzWr5ekkLsOfl7otMW24O/GiAyihs72JqI3VF2ZScSffK0I2UKr2qIxCgeSrCXhfxRHWblqSi4I0EpzGyQyOIEez3ydGZpsWNCi+DT8bkhkchIolwKTibIjOL1+Hn5WEL9Qlp9SjhbpOBygUwTM3Jros2pQtY8jCvKBBZHhR8nKszwfQMkzqqWvm+J4x7LviiG1oL43FyRyN6K8mX4SoiEVGyKz/uzL4pEsqndXdGJ7yrKlyF1c8mQ+VgajlkaMKeCwgn4Ufehddx/N552mBvH7Svr/C12Tq2gcGoDJLJWxW72/vq5rDM7P7dL4FoxScjHuiVxSrXMtrcwDtWmswzDQkmnW2wSfsiqKC1n1QktuFs4AdadjRO4q6LNgTj217LObLGnvpiKWFLB8da2pIa927Qs9mJoHYzPW2oo/kCoIlbFT3i/xrib4zPz+Rwi38Tn/BqKT2NdjXHrMFRjXObj12WddVOUDJPwhfSQ2i6cMepgs5YUpYhpwi5UJWlsxXXSiVxb00aWNA618/OjaOSZmkYmSSdSdzZWxPFt19byKLSzppEp0om0Ky+NheLBalk7wV75UbdOXXe2dCKza+jPjro/SMhA1kbhXapN/yyhGplKZBA3VNA/EXvi2FUpA3rl5aCUAffgDfXe7ifwJu5NsLMmjjmgQj64SDjCnsQdJf0DQs2reA3Qbdsj1K7KarxZgW5EjZDPSqb75QXn+XjHuTdNTbchvBudJ6TsWSF9fVUShIpjVkAexMs6V9qbbGfxmnzdbdPFtdxM4V7jfDk/VjskXHF0hevlU/t/tMPqbdWluEa1rbWptk2IikbRJ8RsUwW5dm1EWJPjeve+0Pium4N4eDwJFNEr7PnHGyRwTLguqFL8aAyThb9fbBT2/6rOnxb+wrFUyJxro8k/1fTjQeH6eZ6Qe10tPzP8IRTzjghv8UGhAvN7gz5cxAWDfwEPyyMATPmgwwAAAABJRU5ErkJggg\u003d\u003d"
   },
-  "description": "Takes a string and hashes it with SHA256. The result is stored in a cookie. This cookie can be used to set up GA User ID Tracking. Ensure to adhere to privacy regulations.",
+  "description": "Takes a string and than performs SHA256 on it. The result is stored in a cookie. This cookie can be used to set up GA User ID Tracking. Ensure to adhere to privacy policies.",
   "containerContexts": [
     "WEB"
   ]
@@ -35,7 +39,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "text1",
     "displayName": "String to hash",
     "simpleValueType": true,
-    "help": "Pass in a Variable which returns the right string. The string passed into this field might be an unique identifier like a User ID or a name.",
+    "help": "Input an unique identifier like an User ID that is going to be hashed and stored in a cookie.",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
@@ -106,6 +110,14 @@ ___TEMPLATE_PARAMETERS___
         ]
       }
     ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "checkbox1",
+    "checkboxText": "Encode hash with Base64",
+    "simpleValueType": true,
+    "defaultValue": true,
+    "help": "Turns the hash into a Base64 encoded string which removes most of the special characters"
   }
 ]
 
@@ -118,8 +130,13 @@ const set_cookie = require('setCookie');
 const get_cookie = require('getCookieValues');
 const sha256 = require('sha256');
 const string = require('makeString');
+const fromBase64 = require('fromBase64');
+const toBase64 = require('toBase64');
+
+
 
 data.text3 = data.text3*60*60*24;
+
 if (get_cookie(data.text2).length == 0) {
   //Specify Cookie Options
   const options = {
@@ -129,11 +146,16 @@ if (get_cookie(data.text2).length == 0) {
   };
   //Creat a hash and write the cookie
   sha256(data.text1, (digest) => {
-    set_cookie(data.text2, digest, options);
+    var coo = digest;
+    if (data.checkbox1) {
+      coo = toBase64(coo);
+      set_cookie(data.text2, coo.substring(0, coo.length -1), options);
+  } else {set_cookie(data.text2, coo, options);}
     data.gtmOnSuccess();
   }, data.gtmOnFailure);
-} 
-
+ 
+ 
+}
         
 
 // Call data.gtmOnSuccess when the tag is finished.
