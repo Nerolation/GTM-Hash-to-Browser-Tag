@@ -1,4 +1,4 @@
-___TERMS_OF_SERVICE___
+﻿___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -13,7 +13,7 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "User ID Cookie Tag",
+  "displayName": "Hash Tag (sha256)",
   "categories": [
     "REMARKETING",
     "ADVERTISING",
@@ -24,7 +24,7 @@ ___INFO___
     "displayName": "Nerolation",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEbElEQVRoge3aS4wVRRQG4G8QmDFidGAEfEUwRkVEjCZGE9SNRiQxAV0h4s6wk4dsXJm4ZIsv1LhwZdwaFTcCShhFJEBQAQGJAsZXfEQEZmDGRVWnm2vPvdV9e5AFf1Lpm1unzjn/rVPVp05dLuLCQk+Duq7EA1iAObgJA5gS+//GLziIffgUn+DPBn2ojV4sw0acwWjFdgYf4smo67yjD2twrODUKWzGC1iCuZgWZfvi59vxeJTZgtOF8UexKsqeFzwqhEfmwJdYgf4auvrj2J0Ffd/ikUY8HQN9eKVgcCcWNqS7R/iBdhX0rzcO4TYDO6KBf7ASlzRtBBOxGiejre2Y3pTyWcJ0jwq7zbwO8nPwPDbhkED8BA7jbdyXYHM+DkSbB6IPXWGGnMRnwoIdCwN4C2e136lG8GKUb4cBfC4nU3tm+uThNCh/H5RhOvZ2INDahrEBl7XRO6VAZruaa+ZVeTi1m4kJ2FqRRLFtxeQ2+gfkYfZSVRKL5Au705p4ogsSWVvbwcad8g0geWu+VFiko3g2Qf69BogcSbCzWr5ekkLsOfl7otMW24O/GiAyihs72JqI3VF2ZScSffK0I2UKr2qIxCgeSrCXhfxRHWblqSi4I0EpzGyQyOIEez3ydGZpsWNCi+DT8bkhkchIolwKTibIjOL1+Hn5WEL9Qlp9SjhbpOBygUwTM3Jros2pQtY8jCvKBBZHhR8nKszwfQMkzqqWvm+J4x7LviiG1oL43FyRyN6K8mX4SoiEVGyKz/uzL4pEsqndXdGJ7yrKlyF1c8mQ+VgajlkaMKeCwgn4Ufehddx/N552mBvH7Svr/C12Tq2gcGoDJLJWxW72/vq5rDM7P7dL4FoxScjHuiVxSrXMtrcwDtWmswzDQkmnW2wSfsiqKC1n1QktuFs4AdadjRO4q6LNgTj217LObLGnvpiKWFLB8da2pIa927Qs9mJoHYzPW2oo/kCoIlbFT3i/xrib4zPz+Rwi38Tn/BqKT2NdjXHrMFRjXObj12WddVOUDJPwhfSQ2i6cMepgs5YUpYhpwi5UJWlsxXXSiVxb00aWNA618/OjaOSZmkYmSSdSdzZWxPFt19byKLSzppEp0om0Ky+NheLBalk7wV75UbdOXXe2dCKza+jPjro/SMhA1kbhXapN/yyhGplKZBA3VNA/EXvi2FUpA3rl5aCUAffgDfXe7ifwJu5NsLMmjjmgQj64SDjCnsQdJf0DQs2reA3Qbdsj1K7KarxZgW5EjZDPSqb75QXn+XjHuTdNTbchvBudJ6TsWSF9fVUShIpjVkAexMs6V9qbbGfxmnzdbdPFtdxM4V7jfDk/VjskXHF0hevlU/t/tMPqbdWluEa1rbWptk2IikbRJ8RsUwW5dm1EWJPjeve+0Pium4N4eDwJFNEr7PnHGyRwTLguqFL8aAyThb9fbBT2/6rOnxb+wrFUyJxro8k/1fTjQeH6eZ6Qe10tPzP8IRTzjghv8UGhAvN7gz5cxAWDfwEPyyMATPmgwwAAAABJRU5ErkJggg\u003d\u003d"
   },
-  "description": "Takes a string and than performs SHA256 on it. The result is stored in a cookie. This cookie can be used to set up GA User ID Tracking. Ensure to adhere to privacy policies.",
+  "description": "Takes a string and than performs SHA256 on it. The result is stored in a cookie or in the local storage. Both can be used to set up GA User ID Tracking. Ensure to adhere to privacy policies.",
   "containerContexts": [
     "WEB"
   ]
@@ -39,13 +39,31 @@ ___TEMPLATE_PARAMETERS___
     "name": "text1",
     "displayName": "String to hash",
     "simpleValueType": true,
-    "help": "Input an unique identifier like an User ID that is going to be hashed and stored in a cookie.",
+    "help": "Pass in a Variable which returns the right string. The string passed into this field might be an unique identifier like a User ID or a name.",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
       }
     ],
     "valueHint": "unique value - name, id, etc."
+  },
+  {
+    "type": "RADIO",
+    "name": "radio1",
+    "displayName": "Storage location",
+    "radioItems": [
+      {
+        "value": 1,
+        "displayValue": "Use Cookie"
+      },
+      {
+        "value": 0,
+        "displayValue": "Use Local Storage"
+      }
+    ],
+    "simpleValueType": true,
+    "defaultValue": 1,
+    "help": "Use either cookies or the local storage as destination for the hash; default is cookies"
   },
   {
     "type": "GROUP",
@@ -109,6 +127,67 @@ ___TEMPLATE_PARAMETERS___
           }
         ]
       }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "radio1",
+        "paramValue": 1,
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "LABEL",
+    "name": "label1",
+    "displayName": "---------------------------------------------------------",
+    "enablingConditions": [
+      {
+        "paramName": "radio1",
+        "paramValue": 1,
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "SELECT",
+    "name": "text21",
+    "displayName": "Key Name",
+    "macrosInSelect": false,
+    "selectItems": [
+      {
+        "value": "gtm_upi",
+        "displayValue": "gtm_upi"
+      },
+      {
+        "value": "gtm_uid",
+        "displayValue": "gtm_uid"
+      },
+      {
+        "value": "ga_upi",
+        "displayValue": "ga_upi"
+      },
+      {
+        "value": "ga_shaid",
+        "displayValue": "ga_shaid"
+      },
+      {
+        "value": "ga_randsha",
+        "displayValue": "ga_randsha"
+      }
+    ],
+    "simpleValueType": true,
+    "help": "Choose a key name",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "radio1",
+        "paramValue": 1,
+        "type": "NOT_EQUALS"
+      }
     ]
   },
   {
@@ -118,6 +197,13 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true,
     "defaultValue": true,
     "help": "Turns the hash into a Base64 encoded string which removes most of the special characters"
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "checkbox2",
+    "checkboxText": "Enable overwriting",
+    "simpleValueType": true,
+    "help": "Check the box to allow the Tag to overwrite the current value in the cookie/local storage"
   }
 ]
 
@@ -127,6 +213,7 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 // Load requirements
 const log = require('logToConsole');
 const set_cookie = require('setCookie');
+const localStorage = require('localStorage');
 const get_cookie = require('getCookieValues');
 const sha256 = require('sha256');
 const string = require('makeString');
@@ -137,27 +224,70 @@ const toBase64 = require('toBase64');
 
 data.text3 = data.text3*60*60*24;
 
-if (get_cookie(data.text2).length == 0) {
-  //Specify Cookie Options
-  const options = {
-    domain: data.domain,
-    'max-age': data.text3,
-    path: "/"
-  };
-  //Creat a hash and write the cookie
-  sha256(data.text1, (digest) => {
-    var coo = digest;
-    if (data.checkbox1) {
-      coo = toBase64(coo);
-      set_cookie(data.text2, coo.substring(0, coo.length -1), options);
-  } else {set_cookie(data.text2, coo, options);}
-    data.gtmOnSuccess();
-  }, data.gtmOnFailure);
- 
- 
-}
-        
+if(data.radio1 == 1) {
+  if (get_cookie(data.text2).length == 0) {
+    //Specify Cookie Options
+    const options = {
+      domain: data.domain,
+      'max-age': data.text3,
+      path: "/"
+    };
+    //Creat a hash and write the cookie
+    sha256(data.text1, (digest) => {
+      var coo = digest;
+      if (data.checkbox1) {
+        coo = toBase64(coo);
+        set_cookie(data.text2, coo.substring(0, coo.length -2), options);
+    } else {set_cookie(data.text2, coo, options);}
+      data.gtmOnSuccess();
+    }, data.gtmOnFailure);
+  } else {
+     if(data.checkbox2) {
+       const options = {
+       domain: data.domain,
+       'max-age': data.text3,
+       path: "/"
+     };
+      //Creat a hash and write the cookie
+      sha256(data.text1, (digest) => {
+        var coo = digest;
+        if (data.checkbox1) {
+          coo = toBase64(coo);
+          set_cookie(data.text2, coo.substring(0, coo.length -2), options);
+        } else {set_cookie(data.text2, coo, options);}
+        data.gtmOnSuccess();
+      }, data.gtmOnFailure);
+   }
+  
+  }
+} 
 
+if(data.radio1 == 0) {
+  if (localStorage) {
+    if (!localStorage.getItem(data.text21)) {
+      //Creat a hash and write the cookie
+      sha256(data.text1, (digest) => {
+        var coo = digest;
+        if (data.checkbox1) {
+          coo = toBase64(coo);
+          localStorage.setItem(data.text21, coo.substring(0, coo.length -2));
+      } else {localStorage.setItem(data.text21, coo);}
+        data.gtmOnSuccess();
+      }, data.gtmOnFailure);
+    } else {
+      if(data.checkbox2) {
+        sha256(data.text1, (digest) => {
+          var coo = digest;
+          if (data.checkbox1) {
+            coo = toBase64(coo);
+            localStorage.setItem(data.text21, coo.substring(0, coo.length -2));
+        } else {localStorage.setItem(data.text21, coo);}
+          data.gtmOnSuccess();
+        }, data.gtmOnFailure);
+       }
+    }
+  } else {log("No local storage - GTM");}
+}
 // Call data.gtmOnSuccess when the tag is finished.
 data.gtmOnSuccess();
 
@@ -510,6 +640,214 @@ ___WEB_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "access_local_storage",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "keys",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "gtm_upi"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "gtm_uid"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ga_upi"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ga_uid"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ga_shaid"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ga_randsha"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
   }
 ]
 
@@ -529,5 +867,4 @@ scenarios:
 ___NOTES___
 
 Created on 12/6/2019, 11:20:11 AM
-
 
