@@ -16,13 +16,15 @@ homepage: "https://toniwahrstaetter.com"
 documentation: "github.com/Nerolation/GTM-UserID-Hash-To-Cookie"
 versions:
 # Latest version
+  - sha: 66f312da8b9877a086432e482074a94108a65548
+    changeNotes: |4
+      Supports base64 encryption
+ # Older versions
   - sha: 6400577a0f114cc27c747a2920f30df8476168ab
     changeNotes: |3
       Added support for Base64 encryption
-  # Latest version
   - sha: 86fd3f81921e76323d0a47f22944958679cff29a
     changeNotes: |2
       Fix spelling mistake in description.
-  # Older versions
   - sha: b10a3a607f0a3c1323eb74ceb0d6fb129cfc7b59
     changeNotes: Initial Version
