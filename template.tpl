@@ -6,14 +6,14 @@ https://developers.google.com/tag-manager/gallery-tos (or such other URL as
 Google may provide), as modified from time to time.
 
 
-___INFO___
+﻿___INFO___
 
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "Hash to Browser Tag",
+  "displayName": "Hash Tag (sha256)",
   "categories": [
     "REMARKETING",
     "ADVERTISING",
@@ -230,7 +230,10 @@ if(data.radio1 == 1) {
     const options = {
       domain: data.domain,
       'max-age': data.text3,
-      path: "/"
+      path: "/",
+      samesite:'lax',
+      secure:true
+      
     };
     //Creat a hash and write the cookie
     sha256(data.text1, (digest) => {
@@ -246,7 +249,9 @@ if(data.radio1 == 1) {
        const options = {
        domain: data.domain,
        'max-age': data.text3,
-       path: "/"
+       path: "/",
+       samesite:'lax',
+       secure:true
      };
       //Creat a hash and write the cookie
       sha256(data.text1, (digest) => {
