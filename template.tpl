@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -6,7 +6,7 @@ https://developers.google.com/tag-manager/gallery-tos (or such other URL as
 Google may provide), as modified from time to time.
 
 
-﻿___INFO___
+___INFO___
 
 {
   "type": "TAG",
@@ -45,7 +45,20 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ],
-    "valueHint": "unique value - name, id, etc."
+    "valueHint": "unique value - name, id, etc.",
+    "enablingConditions": [
+      {
+        "paramName": "checkbox3",
+        "paramValue": false,
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "checkbox3",
+    "checkboxText": "Use Client ID",
+    "simpleValueType": true
   },
   {
     "type": "RADIO",
@@ -220,6 +233,10 @@ const string = require('makeString');
 const fromBase64 = require('fromBase64');
 const toBase64 = require('toBase64');
 
+
+if(data.checkbox3) {
+  data.text1 = get_cookie("_ga")[0].replace("GA1.2.", "");
+}
 
 
 data.text3 = data.text3*60*60*24;
@@ -872,4 +889,5 @@ scenarios:
 ___NOTES___
 
 Created on 12/6/2019, 11:20:11 AM
+
 
