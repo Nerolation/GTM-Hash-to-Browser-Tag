@@ -15,9 +15,11 @@
 homepage: "https://toniwahrstaetter.com"
 documentation: "github.com/Nerolation/GTM-Hash-to-Browser-Tag"
 versions:
+  - sha: cd18129e73d8612df933bf10e86189a594878aaf
+    changeNotes: dataLayer support implemented.
+# Older versions
   - sha: 9763f8d6afadc3039ded3cffa0228c608c2c95ce
     changeNotes: Added Client ID Hash.
-# Older versions
   - sha: 76106104093c6ebb017c3e7c0420a30cc780a233
     changeNotes: Added samesite=lax;secure.
   - sha: 81a943d4693d06a964dae7a778c72aaad68ffc55
