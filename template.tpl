@@ -45,20 +45,7 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ],
-    "valueHint": "unique value - name, id, etc.",
-    "enablingConditions": [
-      {
-        "paramName": "checkbox3",
-        "paramValue": false,
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "type": "CHECKBOX",
-    "name": "checkbox3",
-    "checkboxText": "Use Client ID",
-    "simpleValueType": true
+    "valueHint": "unique value - name, id, etc."
   },
   {
     "type": "RADIO",
@@ -72,6 +59,10 @@ ___TEMPLATE_PARAMETERS___
       {
         "value": 0,
         "displayValue": "Use Local Storage"
+      },
+      {
+        "value": 2,
+        "displayValue": "Use Datalayer"
       }
     ],
     "simpleValueType": true,
@@ -150,18 +141,6 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
-    "type": "LABEL",
-    "name": "label1",
-    "displayName": "---------------------------------------------------------",
-    "enablingConditions": [
-      {
-        "paramName": "radio1",
-        "paramValue": 1,
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
     "type": "SELECT",
     "name": "text21",
     "displayName": "Key Name",
@@ -198,8 +177,8 @@ ___TEMPLATE_PARAMETERS___
     "enablingConditions": [
       {
         "paramName": "radio1",
-        "paramValue": 1,
-        "type": "NOT_EQUALS"
+        "paramValue": 0,
+        "type": "EQUALS"
       }
     ]
   },
@@ -216,7 +195,14 @@ ___TEMPLATE_PARAMETERS___
     "name": "checkbox2",
     "checkboxText": "Enable overwriting",
     "simpleValueType": true,
-    "help": "Check the box to allow the Tag to overwrite the current value in the cookie/local storage"
+    "help": "Check the box to allow the Tag to overwrite the current value in the cookie/local storage",
+    "enablingConditions": [
+      {
+        "paramName": "radio1",
+        "paramValue": 2,
+        "type": "NOT_EQUALS"
+      }
+    ]
   }
 ]
 
@@ -232,86 +218,121 @@ const sha256 = require('sha256');
 const string = require('makeString');
 const fromBase64 = require('fromBase64');
 const toBase64 = require('toBase64');
+const createQueue = require('createQueue');
+const makeString = require('makeString');
 
 
-if(data.checkbox3) {
-  data.text1 = get_cookie("_ga")[0].replace("GA1.2.", "");
-}
+if (data.text1) {
+    data.text3 = data.text3 * 60 * 60 * 24;
 
+    // Cookie
+    if (data.radio1 == 1) {
+        if (get_cookie(data.text2).length == 0) {
+            //Specify Cookie Options
+            const options = {
+                domain: data.domain,
+                'max-age': data.text3,
+                path: "/",
+                samesite: 'lax',
+                secure: true
+            };
+            //Creat a hash and write the cookie
+            sha256(data.text1, (digest) => {
+                var coo = digest;
+                if (data.checkbox1) {
+                    coo = toBase64(coo);
+                    set_cookie(data.text2, coo.substring(0, coo.length - 2), options);
+                } else {
+                    set_cookie(data.text2, coo, options);
+                }
+                data.gtmOnSuccess();
+            }, data.gtmOnFailure);
+        } else {
+            if (data.checkbox2) {
+                const options = {
+                    domain: data.domain,
+                    'max-age': data.text3,
+                    path: "/",
+                    samesite: 'lax',
+                    secure: true
+                };
+                //Creat a hash and write the cookie
+                sha256(data.text1, (digest) => {
+                    var coo = digest;
+                    if (data.checkbox1) {
+                        coo = toBase64(coo);
+                        set_cookie(data.text2, coo.substring(0, coo.length - 2), options);
+                    } else {
+                        set_cookie(data.text2, coo, options);
+                    }
+                    data.gtmOnSuccess();
+                }, data.gtmOnFailure);
+            }
 
-data.text3 = data.text3*60*60*24;
-
-if(data.radio1 == 1) {
-  if (get_cookie(data.text2).length == 0) {
-    //Specify Cookie Options
-    const options = {
-      domain: data.domain,
-      'max-age': data.text3,
-      path: "/",
-      samesite:'lax',
-      secure:true
-      
-    };
-    //Creat a hash and write the cookie
-    sha256(data.text1, (digest) => {
-      var coo = digest;
-      if (data.checkbox1) {
-        coo = toBase64(coo);
-        set_cookie(data.text2, coo.substring(0, coo.length -2), options);
-    } else {set_cookie(data.text2, coo, options);}
-      data.gtmOnSuccess();
-    }, data.gtmOnFailure);
-  } else {
-     if(data.checkbox2) {
-       const options = {
-       domain: data.domain,
-       'max-age': data.text3,
-       path: "/",
-       samesite:'lax',
-       secure:true
-     };
-      //Creat a hash and write the cookie
-      sha256(data.text1, (digest) => {
-        var coo = digest;
-        if (data.checkbox1) {
-          coo = toBase64(coo);
-          set_cookie(data.text2, coo.substring(0, coo.length -2), options);
-        } else {set_cookie(data.text2, coo, options);}
-        data.gtmOnSuccess();
-      }, data.gtmOnFailure);
-   }
-  
-  }
-} 
-
-if(data.radio1 == 0) {
-  if (localStorage) {
-    if (!localStorage.getItem(data.text21)) {
-      //Creat a hash and write the cookie
-      sha256(data.text1, (digest) => {
-        var coo = digest;
-        if (data.checkbox1) {
-          coo = toBase64(coo);
-          localStorage.setItem(data.text21, coo.substring(0, coo.length -2));
-      } else {localStorage.setItem(data.text21, coo);}
-        data.gtmOnSuccess();
-      }, data.gtmOnFailure);
-    } else {
-      if(data.checkbox2) {
-        sha256(data.text1, (digest) => {
-          var coo = digest;
-          if (data.checkbox1) {
-            coo = toBase64(coo);
-            localStorage.setItem(data.text21, coo.substring(0, coo.length -2));
-        } else {localStorage.setItem(data.text21, coo);}
-          data.gtmOnSuccess();
-        }, data.gtmOnFailure);
-       }
+        }
     }
-  } else {log("No local storage - GTM");}
+
+    // DataLayer
+    if (data.radio1 == 2) {
+        //Creat a hash and write the to dataLayer
+        sha256(data.text1, (digest) => {
+            var coo = digest;
+            if (data.checkbox1) {
+                coo = toBase64(coo);
+                const dataLayerPush = createQueue('dataLayer');
+                dataLayerPush({
+                    'sha3_value': makeString(coo.substring(0, coo.length - 2)),
+                    'event': 'sha3'
+                });
+            } else {
+                const dataLayerPush = createQueue('dataLayer');
+                dataLayerPush({
+                    'sha3_value': makeString(coo),
+                    'event': 'sha3'
+                });
+            }
+            data.gtmOnSuccess();
+        }, data.gtmOnFailure);
+    }
+
+    // Local Storage
+    if (data.radio1 == 0) {
+        if (localStorage) {
+            if (!localStorage.getItem(data.text21)) {
+                //Creat a hash and write the cookie
+                sha256(data.text1, (digest) => {
+                    var coo = digest;
+                    if (data.checkbox1) {
+                        coo = toBase64(coo);
+                        localStorage.setItem(data.text21, coo.substring(0, coo.length - 2));
+                    } else {
+                        localStorage.setItem(data.text21, coo);
+                    }
+                    data.gtmOnSuccess();
+                }, data.gtmOnFailure);
+            } else {
+                if (data.checkbox2) {
+                    sha256(data.text1, (digest) => {
+                        var coo = digest;
+                        if (data.checkbox1) {
+                            coo = toBase64(coo);
+                            localStorage.setItem(data.text21, coo.substring(0, coo.length - 2));
+                        } else {
+                            localStorage.setItem(data.text21, coo);
+                        }
+                        data.gtmOnSuccess();
+                    }, data.gtmOnFailure);
+                }
+            }
+        } else {
+            log("No local storage - GTM");
+        }
+    }
+    // Call data.gtmOnSuccess when the tag is finished.
+    data.gtmOnSuccess();
+} else {
+    data.gtmOnFailure();
 }
-// Call data.gtmOnSuccess when the tag is finished.
-data.gtmOnSuccess();
 
 
 ___WEB_PERMISSIONS___
@@ -858,6 +879,67 @@ ___WEB_PERMISSIONS___
                   {
                     "type": 8,
                     "boolean": true
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "access_globals",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "keys",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "dataLayer"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
                   }
                 ]
               }
